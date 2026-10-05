@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>QFT, Phase Estimation, Order Finding & HSP – Visual Notes</title>
+<style>
+:root{--bg:#0b0820;--fg:#eef;--card:rgba(255,255,255,.08);--acc:#a78bfa;--acc2:#38bdf8;--bd:rgba(255,255,255,.18);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body[data-t=blackhole]{--bg:#050505;--acc:#fb923c;--acc2:#fde68a}
+body[data-t=supernova]{--bg:#1a0603;--acc:#f97316;--acc2:#facc15}
+body[data-t=aurora]{--bg:#03150f;--acc:#34d399;--acc2:#2dd4bf}
+body[data-t=cyber]{--bg:#0a0414;--acc:#ff2bd6;--acc2:#22e5ff}
+body[data-t=ocean]{--bg:#021a2e;--acc:#38bdf8;--acc2:#5eead4}
+body[data-t=sunset]{--bg:#2a0f3a;--acc:#fb7185;--acc2:#fdba74}
+body[data-t=paper]{--bg:#fbf8f1;--fg:#1c1a2b;--card:rgba(255,255,255,.85);--acc:#5b3fd6;--acc2:#0369a1;--bd:rgba(0,0,0,.15)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(60px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 system-ui,Segoe UI,sans-serif;transition:background .5s}
+#bg{position:fixed;inset:0;z-index:-1;width:100%;height:100%}
+#bar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));z-index:20}
+nav{position:sticky;top:0;z-index:10;display:flex;gap:8px;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 8px;background:var(--card);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
+nav a{color:var(--fg);text-decoration:none;padding:4px 10px;border-radius:99px;border:1px solid var(--bd);font-size:14px}nav a:hover{background:var(--acc);color:#000}
+select,input,button{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:5px 10px}
+button{cursor:pointer;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#000;font-weight:600;border:0}button:hover{transform:translateY(-2px)}
+main{max-width:980px;margin:auto;padding:16px}
+section{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:20px;padding:20px;margin:22px 0;transition:.3s}
+section:hover{box-shadow:0 0 30px color-mix(in srgb,var(--acc) 35%,transparent)}
+h1{font-size:clamp(26px,5vw,42px);background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;color:transparent;margin:.3em 0}
+h2{margin-top:0;color:var(--acc2)}h3{color:var(--acc)}
+.box{border-left:5px solid var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent);padding:10px 14px;border-radius:10px;margin:10px 0}
+.warn{border-left-color:#f87171;background:rgba(248,113,113,.15)}
+b,.hl{color:var(--acc2)}.how{font-size:14px;opacity:.85;border-top:1px dashed var(--bd);margin-top:6px;padding-top:6px}
+canvas{width:100%;max-width:640px;background:rgba(0,0,0,.25);border-radius:12px;display:block;margin:6px 0}
+body[data-t=paper] canvas{background:rgba(0,0,0,.05)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0}input[type=range]{flex:1;min-width:120px;padding:0}
+.st{opacity:0;animation:in .6s forwards;margin:6px 0;padding:8px 12px;border-radius:10px;background:rgba(127,127,127,.15)}
+@keyframes in{to{opacity:1}}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.flow div{padding:10px 14px;border-radius:12px;border:1px solid var(--acc);animation:pulse 3s infinite}
+.flow div:nth-child(3){animation-delay:.5s}.flow div:nth-child(5){animation-delay:1s}.flow div:nth-child(7){animation-delay:1.5s}.flow div:nth-child(9){animation-delay:2s}
+@keyframes pulse{50%{background:color-mix(in srgb,var(--acc) 40%,transparent)}}
+body.rm *{animation:none!important;transition:none!important}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid var(--bd);padding:6px;text-align:left}
+.q{margin:12px 0}.q button{display:block;margin:5px 0;background:var(--card);color:var(--fg);border:1px solid var(--bd);font-weight:400;text-align:left;width:100%}
+.ok{background:#16a34a!important;color:#fff!important}.no{background:#dc2626!important;color:#fff!important}
+.dots{display:flex;flex-wrap:wrap;gap:6px}.dots span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:13px;color:#000;font-weight:700}
+</style></head><body data-t="galaxy"><canvas id="bg"></canvas><div id="bar"></div>
+<nav><select id="th"><option value="galaxy">🌌 Galaxy</option><option value="blackhole">🕳️ Black Hole</option><option value="supernova">💥 Supernova</option><option value="aurora">🌿 Aurora</option><option value="cyber">🌃 Cyberpunk</option><option value="ocean">🌊 Deep Ocean</option><option value="sunset">🌅 Sunset Retro</option><option value="paper">📄 Light Paper</option></select>
+<label><input type="checkbox" id="rm"> Reduce Motion</label>
+<a href="#s1">Hook</a><a href="#s2">Basics</a><a href="#s3">QFT</a><a href="#s5">QPE</a><a href="#s6">Period</a><a href="#s7">Order</a><a href="#s8">HSP</a><a href="#s9">Map</a><a href="#s11">Mistakes</a><a href="#s13">Quiz</a></nav>
+<main>
+<h1>⚛️ QFT • Phase Estimation • Order Finding • HSP</h1><p>Starting from zero: first the <b>picture</b>, then the formula. Play with every simulation yourself! 🎛️</p>
+
+<section id="s1"><h2>🔐 1. Hook: A Huge Lock, a Tiny Key</h2>
+<p>Imagine a giant lock: <b>N = p × q</b> (the product of two huge prime numbers). The internet's <b>RSA</b> (online security system) relies on this, because recovering p and q from N takes a classical computer years. Tiny example: N = 15 → 3 × 5.</p>
+<div class="box">🗝️ <b>Shor's trick:</b> turn factoring into <b>finding a period</b> (a<sup>x</sup> mod N repeats in a pattern). Finding a period is a job for the <b>Fourier Transform</b>, and a quantum computer does it very fast (QFT). This gives the whole chain:</div>
+<div class="flow"><div>QFT</div>→<div>Phase Estimation</div>→<div>Order Finding</div>→<div>Shor</div>→<div>HSP (badi family)</div></div></section>
+
+<section id="s2"><h2>🧱 2. Zero-level Prerequisites</h2>
+<h3>🪙 Qubit and Measurement</h3>
+<p>A bit is only 0 or 1. A <b>qubit</b> is a mixture of 0 and 1 (superposition): |ψ⟩ = α|0⟩ + β|1⟩. When measured you get just one result (<b>collapse</b>): probability of 0 = |α|².</p>
+<div class="row">θ: <input type="range" id="th1" min="0" max="180" value="90"><span id="p1"></span><button id="m1">Measure ×100</button><button id="r1">Reset</button></div>
+<canvas id="c1" width="600" height="150"></canvas><div class="how">How to read: green bar = times 0 appeared, blue = times 1. θ=0 → always 0; θ=90° → about 50-50 (like a Hadamard).</div>
+<h3>🕰️ Complex numbers = clock hands, and Roots of Unity</h3>
+<p>A complex number a+bi is an <b>arrow</b>: length = magnitude, angle = <b>phase</b>. e<sup>iθ</sup> = cosθ + i·sinθ is a point on the unit circle. Split the circle into N equal parts to get the N <b>roots of unity</b> (powers of ω = e<sup>2πi/N</sup>). This is the real language of the QFT.</p>
+<div class="row">N: <input type="range" id="nr" min="2" max="16" value="8"><span id="nrv"></span><button id="pr">▶/⏸</button></div>
+<canvas id="c2" width="300" height="300" style="max-width:300px"></canvas><div class="how">How to read: each dot is ω<sup>k</sup>. The rotating arrow sweeps around like a clock hand.</div>
+<h3>🔢 Modular Arithmetic (clock arithmetic)</h3>
+<div class="row">x mod n: <input id="ma" type="number" value="7" style="width:70px"> mod <input id="mn" type="number" value="5" min="1" style="width:70px"><span id="mr"></span></div>
+<p>On a 12-hour clock, 15:00 is 3 o'clock, i.e. 15 mod 12 = 3. It is just "wrap around".</p>
+<h3>👥 Group, Subgroup, Coset</h3>
+<p>A <b>group</b> = things + an operation that stays inside the set (e.g. Z<sub>12</sub>: adding on a clock). A <b>subgroup</b> = a smaller group inside (0,4,8). A <b>coset</b> = a shifted copy of the subgroup (1,5,9). Cosets split the elements into "families". See Section 8.</p></section>
+
+<section id="s3"><h2>🌊 3 & 4. QFT and Inverse QFT</h2>
+<p>The classical <b>DFT</b> breaks a signal into frequencies (like separating bass and treble in a song). The QFT does the same on the amplitudes of a quantum state, using only <b>n qubits</b> (N = 2<sup>n</sup>).</p>
+<div class="box">QFT|j⟩ = (1/√N) Σ<sub>k</sub> ω<sup>jk</sup> |k⟩, ω = e<sup>2πi/N</sup><br>• j = input number • k = output frequency • 1/√N = normalisation • ω<sup>jk</sup> = rotating hand. <b>Inverse QFT</b>: just replace ω by ω<sup>−1</sup> (negative phases, gates in reverse order).</div>
+<svg viewBox="0 0 520 140" width="100%" style="max-width:560px"><g stroke="currentColor" fill="none"><path d="M10 25H510M10 70H510M10 115H510"/><g fill="var(--acc)" stroke="none"><rect x="40" y="10" width="34" height="30" rx="5"/><rect x="170" y="55" width="34" height="30" rx="5"/><rect x="290" y="100" width="34" height="30" rx="5"/></g><path d="M100 25V70M130 25V115M220 70V115"/></g><g fill="currentColor" font-size="13"><text x="48" y="30">H</text><text x="176" y="75">H</text><text x="298" y="120">H</text><text x="92" y="55">R₂</text><text x="125" y="95">R₃</text><text x="226" y="95">R₂</text><text x="380" y="75">SWAP q₀↔q₂</text></g></svg>
+<div class="how">How to read: each qubit gets an H (superposition), then <b>controlled phase rotations</b> R<sub>k</sub> from the lower qubits (rotate the phase by 2π/2<sup>k</sup>), and finally a SWAP (the bit order comes out reversed, so flip it back).</div>
+<h3>🎛️ Simulation (colour = phase, height = amplitude)</h3>
+<div class="row">N: <select id="qn"><option>4</option><option selected>8</option><option>16</option></select>Input: <select id="qm"><option value="b">|j⟩ basis state</option><option value="c">Periodic comb (every p-th)</option></select>j/p: <input type="range" id="qj" min="0" max="7" value="1"><span id="qv"></span><button id="qa">▶ Auto</button></div>
+<canvas id="q1" width="640" height="130"></canvas><b>Input</b><canvas id="q2" width="640" height="130"></canvas><b>After QFT</b><canvas id="q3" width="640" height="130"></canvas><b>Then Inverse QFT → original is back ✅</b>
+<div class="how">How to read: the QFT of |j⟩ gives <i>equal</i> height at every k but with a different phase each (rainbow). A comb with period p gives <b>peaks</b> only at multiples of N/p: that is the secret of period finding!</div>
+<h3>🧮 Numerical: 2-qubit QFT of |1⟩ (N=4, ω=i)</h3><button id="nb1">Next Step ▶</button><button id="nr1">Reset</button><div id="n1"></div></section>
+
+<section id="s5"><h2>🎯 5. Phase Estimation (QPE)</h2>
+<p><b>Problem:</b> given an eigenstate |u⟩ of a unitary U (a quantum operation): U|u⟩ = e<sup>2πiφ</sup>|u⟩. Find φ (between 0 and 1).<br><b>Phase kickback:</b> applying controlled-U leaves |u⟩ unchanged, but the phase gets "kicked back" onto the <i>control qubit</i>. Apply U<sup>2^k</sup> from counting qubit k and the phase 2<sup>k</sup>φ accumulates → this forms a Fourier state → read φ directly with the <b>inverse QFT</b>.</p>
+<svg viewBox="0 0 520 130" width="100%" style="max-width:560px"><g stroke="currentColor" fill="none"><path d="M10 25H510M10 65H510M10 110H510"/><path d="M80 25V100M140 65V100M330 25V65"/></g><g fill="var(--acc)"><rect x="35" y="10" width="26" height="30"/><rect x="35" y="50" width="26" height="30"/><rect x="60" y="95" width="42" height="30"/><rect x="120" y="95" width="42" height="30"/><rect x="300" y="10" width="90" height="75"/></g><g fill="#000" font-size="12"><text x="40" y="30">H</text><text x="40" y="70">H</text><text x="66" y="115">U</text><text x="124" y="115">U²</text><text x="305" y="50">QFT⁻¹</text></g></svg>
+<div class="how">How to read: counting qubits on top (start with H), |u⟩ at the bottom. Controlled-U<sup>2^k</sup> in the middle, then QFT⁻¹ and measurement → binary φ.</div>
+<div class="row">φ: <input type="range" id="pf" min="0" max="1" step="0.001" value="0.333"><span id="pfv"></span></div><div class="row">Precision qubits t: <input type="range" id="pt" min="1" max="8" value="4"><span id="ptv"></span></div>
+<canvas id="p1" width="640" height="160"></canvas><div id="pinfo" class="box"></div>
+<div class="how">How to read: each bar = one possible measurement k (estimate k/2<sup>t</sup>). At φ=1/4 (t≥2) a single bar has 100%: <b>exact</b>. At φ=1/3 it is never exact, but raising t makes the peak <i>sharper and more accurate</i>.</div>
+<h3>🧮 Numerical: φ = 1/4, t = 2</h3><button id="nb2">Next Step ▶</button><button id="nr2">Reset</button><div id="n2"></div></section>
+
+<section id="s6"><h2>🔁 6. Period Finding</h2>
+<p>f(x) = a<sup>x</sup> mod N repeats. The quantum way: superposition of x → compute f(x) → measure the second register (now only x₀, x₀+r, x₀+2r... remain) → QFT → peaks at <b>k ≈ jQ/r</b>.</p>
+<div class="row">N: <select id="fN"><option>15</option><option>21</option><option>35</option></select>a: <input type="number" id="fa" value="7" min="2" style="width:70px"><span id="fi"></span></div>
+<canvas id="f1" width="640" height="130"></canvas><b>f(x) = aˣ mod N (x = 0..63)</b><canvas id="f2" width="640" height="130"></canvas><b>QFT output |amplitude|² (Q = 64)</b><div id="fcf" class="box"></div>
+<div class="how">How to read: the top wave repeats every r steps. The bottom peaks are evenly spaced, and that spacing reveals the period. Continued fractions turn a peak k/Q into the nearest simple fraction s/r (r = denominator).</div></section>
+
+<section id="s7"><h2>🧩 7. Order Finding Problem</h2>
+<p>The <b>order</b> is the smallest r &gt; 0 with a<sup>r</sup> ≡ 1 (mod N) (needs gcd(a,N)=1). <b>Link to QPE:</b> U|y⟩ = |ay mod N⟩ is a unitary whose eigenvalues are e<sup>2πi s/r</sup>. Get s/r from QPE → you have r!<br>⏱️ Classical: best algorithms ~ exp(n<sup>1/3</sup>) (subexponential). Quantum (Shor): ~ O(n³) (polynomial) → far faster.</p>
+<div class="box"><b>Shor flow:</b> N → pick a → order r (quantum) → r even? → x = a<sup>r/2</sup> mod N, x≢−1 → gcd(x−1,N), gcd(x+1,N) = factors 🎉</div>
+<h3>🧮 Step-by-step + Practice mode</h3>
+<div class="row">N: <input id="oN" type="number" value="15" style="width:80px"> a: <input id="oa" type="number" value="7" style="width:80px"><button id="ob">Next Step ▶</button><button id="or">Reset</button><button onclick="oa.value=2;oN.value=15;oRes()">a=2 example</button></div><div id="o1"></div></section>
+
+<section id="s8"><h2>🧬 8. Hidden Subgroup Problem (HSP)</h2>
+<p>A function f on a group G is <b>constant on each coset</b> and different on different cosets. Find the hidden subgroup H. <b>A big family:</b> Simon's problem (G=Z₂ⁿ), Period/Order finding (G=Z), Discrete log (G=Z²) are all special cases.</p>
+<div class="box">Flow: superposition → evaluate f → QFT over G → measure → classical post-processing (recover H from the samples).</div>
+<div class="row">G = Z<sub>N</sub>, N: <select id="hN"><option>12</option><option>16</option><option>18</option></select>H = ⟨d⟩, d: <select id="hd"></select><button id="hs">Sample ▶</button><button id="hr">Reset</button></div>
+<div class="dots" id="hdots"></div><div id="hout" class="box"></div>
+<div class="how">How to read: each circle is a group element; same colour = same coset (same f value). Each sample gives a k with k·d ≡ 0 (mod N). The gcd of a few samples with N gives d = N/gcd.</div>
+<p><b>Non-abelian groups</b> (e.g. dihedral D<sub>N</sub>, symmetric S<sub>n</sub>): the order of operations matters, so the simple QFT approach fails. Dihedral HSP ≈ lattice problems (post-quantum crypto) and S<sub>n</sub> HSP ≈ Graph Isomorphism; both are still <b>open</b>.</p></section>
+
+<section id="s9"><h2>🗺️ 9. Connection Map</h2>
+<div class="flow"><div>🌊 QFT</div>→<div>🎯 Phase Estimation</div>→<div>🔁 Order Finding</div>→<div>🔐 Shor (factoring)</div>→<div>🧬 HSP (generalisation)</div></div>
+<div class="how">How to read: each tool is the engine of the next. QFT finds periods, QPE turns that into eigenvalue estimation, order finding gives factoring, and HSP puts everything under one umbrella.</div></section>
+
+<section id="s10"><h2>🌍 10. Real-life Applications</h2><table><tr><td>🔐 Breaking RSA</td><td>Shor factors N → reveals the private key. Hence the need for post-quantum crypto.</td></tr><tr><td>⚗️ Quantum chemistry</td><td>QPE computes a molecule's energy eigenvalues (new drugs, batteries).</td></tr><tr><td>📡 Signal processing</td><td>Frequency detection (FFT-like ideas on exponentially compact states).</td></tr><tr><td>🛡️ Post-quantum crypto</td><td>Lattice-based schemes (non-abelian HSP is still hard, so they are considered safe).</td></tr></table></section>
+
+<section id="s11"><h2>⚠️ 11. Common Mistakes</h2>
+<div class="box warn">QFT ≠ classical FFT: the QFT transforms amplitudes, but you <b>cannot read all amplitudes</b>; you can only measure.</div>
+<div class="box warn">Forgetting the final <b>SWAP</b> (bit reversal) in the QFT circuit reverses the output.</div>
+<div class="box warn">If the period r is <b>odd</b>, or a<sup>r/2</sup> ≡ −1 (mod N) → pick a new a and retry.</div>
+<div class="box warn">gcd(a, N) = 1 is required; otherwise a<sup>x</sup> mod N never reaches 1 (but then the gcd itself is a factor!).</div></section>
+
+<section id="s12"><h2>📝 12. Quick Revision</h2><table><tr><th>Topic</th><th>Remember</th></tr>
+<tr><td>QFT</td><td>|j⟩ → (1/√N)Σ ω<sup>jk</sup>|k⟩, ω=e<sup>2πi/N</sup></td></tr><tr><td>QFT⁻¹</td><td>ω → ω⁻¹</td></tr><tr><td>QPE</td><td>U|u⟩=e<sup>2πiφ</sup>|u⟩; t qubits ⇒ error ~2⁻ᵗ</td></tr><tr><td>Order</td><td>min r: a<sup>r</sup>≡1 (mod N)</td></tr><tr><td>Factors</td><td>gcd(a<sup>r/2</sup> ± 1, N)</td></tr><tr><td>HSP</td><td>f constant on cosets of H → QFT → measure → H</td></tr></table>
+<div class="box">🧠 Mnemonic: <b>"Q-P-O-S-H"</b>: QFT → Phase est → Order → Shor → HSP. And "Peak = Period".</div></section>
+
+<section id="s13"><h2>🧠 13. Mini Quiz</h2><div id="quiz"></div><div id="score" class="box"></div></section>
+
+<section id="s14"><h2>✅ 14. Summary</h2><p>1) QFT turns amplitudes into "frequencies". 2) The inverse QFT undoes it. 3) QPE finds the phase φ (phase kickback + QFT⁻¹). 4) In period finding, QFT peaks reveal r. 5) Order finding = QPE on U|y⟩=|ay mod N⟩. 6) Order → gcd → factors (Shor). 7) HSP covers all of these; the non-abelian case is open.</p></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),rm=$('#rm');let FG='#eee',redraw=[];
+const gcd=(a,b)=>b?gcd(b,a%b):a,mp=(a,e,n)=>{let r=1;a%=n;while(e--)r=r*a%n;return r};
+/* ---------- themes + background ---------- */
+const TH={galaxy:['#c4b5fd','#7dd3fc'],blackhole:['#fb923c','#fff'],supernova:['#f97316','#facc15'],aurora:['#34d399','#2dd4bf'],cyber:['#ff2bd6','#22e5ff'],ocean:['#7dd3fc','#5eead4'],sunset:['#fb7185','#fdba74'],paper:['#c7bdf0','#bde0f0']};
+const bg=$('#bg'),bx=bg.getContext('2d');let P=[],T=0;
+function rs(){bg.width=innerWidth;bg.height=innerHeight;P=Array.from({length:90},()=>({x:Math.random()*bg.width,y:Math.random()*bg.height,r:Math.random()*2+.5,s:Math.random()*.6+.2,p:Math.random()*6}))}
+addEventListener('resize',rs);rs();
+function loop(){const t=document.body.dataset.t,c=TH[t];T+=.02;bx.clearRect(0,0,bg.width,bg.height);
+ if(t==='blackhole'){const x=bg.width/2,y=bg.height/2;for(let i=0;i<6;i++){bx.save();bx.translate(x,y);bx.rotate(T*(1+i*.2));bx.scale(1,.3);bx.beginPath();bx.arc(0,0,70+i*22,0,6.3);bx.strokeStyle=`rgba(251,146,60,${.5-i*.07})`;bx.lineWidth=6;bx.stroke();bx.restore()}bx.fillStyle='#000';bx.beginPath();bx.arc(x,y,55,0,6.3);bx.fill()}
+ P.forEach((p,i)=>{if(['supernova','ocean','sunset'].includes(t)){p.y+=(t==='ocean'?-1:t==='supernova'?-.6:.3)*p.s*2;if(p.y<-5)p.y=bg.height;if(p.y>bg.height)p.y=0}
+  bx.globalAlpha=.4+.5*Math.sin(T*2+p.p)**2;bx.fillStyle=c[i%2];bx.beginPath();bx.arc(p.x,p.y,p.r*(t==='ocean'?2:1),0,6.3);bx.fill()});
+ if(t==='aurora'||t==='galaxy'){bx.globalAlpha=.12;const g=bx.createLinearGradient(0,0,bg.width,0);g.addColorStop(0,c[0]);g.addColorStop(1,c[1]);bx.fillStyle=g;bx.beginPath();bx.moveTo(0,200);for(let x=0;x<=bg.width;x+=20)bx.lineTo(x,150+60*Math.sin(x/150+T));bx.lineTo(bg.width,0);bx.lineTo(0,0);bx.fill()}
+ bx.globalAlpha=1;if(!rm.checked)requestAnimationFrame(loop);else setTimeout(loop,500)}
+loop();
+$('#th').onchange=e=>{document.body.dataset.t=e.target.value;FG=e.target.value==='paper'?'#222':'#eee';redraw.forEach(f=>f())};
+rm.onchange=()=>{document.body.classList.toggle('rm',rm.checked)};
+addEventListener('scroll',()=>{$('#bar').style.width=100*scrollY/(document.body.scrollHeight-innerHeight)+'%'});
+/* ---------- helpers ---------- */
+function bars(cv,v,col){const c=$(cv),x=c.getContext('2d'),W=c.width,H=c.height,n=v.length,w=W/n;x.clearRect(0,0,W,H);x.fillStyle=FG;x.font='11px sans-serif';
+ v.forEach((a,i)=>{const m=Array.isArray(a)?Math.hypot(...a):a,h=m*(H-24);x.fillStyle=col?col(i,a):`hsl(${(Math.atan2(a[1],a[0])*180/Math.PI+360)%360},80%,55%)`;x.fillRect(i*w+1,H-h-16,Math.max(w-2,1),h);if(n<=16){x.fillStyle=FG;x.fillText(i,i*w+w/3,H-3)}})}
+function stepper(box,btn,rst,arr){let i=0;const b=$(box);$(btn).onclick=()=>{if(i<arr.length){const d=document.createElement('div');d.className='st';d.innerHTML=arr[i++];b.append(d)}};$(rst).onclick=()=>{i=0;b.innerHTML=''}}
+/* ---------- prereq ---------- */
+let h1=[0,0];function d1(){const c=$('#c1'),x=c.getContext('2d'),th=$('#th1').value*Math.PI/180,p0=Math.cos(th/2)**2;$('#p1').textContent=` P(0)=${p0.toFixed(2)}  P(1)=${(1-p0).toFixed(2)}`;x.clearRect(0,0,600,150);const t=h1[0]+h1[1]||1;[[0,'#4ade80'],[1,'#38bdf8']].forEach(([k,col])=>{x.fillStyle=col;const h=h1[k]/t*100;x.fillRect(150+k*200,130-h,100,h);x.fillStyle=FG;x.fillText('|'+k+'⟩  '+h1[k],170+k*200,145)})}
+$('#th1').oninput=()=>{h1=[0,0];d1()};$('#r1').onclick=()=>{h1=[0,0];d1()};$('#m1').onclick=()=>{const p=Math.cos($('#th1').value*Math.PI/360)**2;for(let i=0;i<100;i++)h1[Math.random()<p?0:1]++;d1()};redraw.push(d1);d1();
+let ang=0,run=1;$('#pr').onclick=()=>run=!run;function d2(){const c=$('#c2'),x=c.getContext('2d'),N=+$('#nr').value;$('#nrv').textContent=' ω = e^(2πi/'+N+')';x.clearRect(0,0,300,300);x.strokeStyle=FG;x.beginPath();x.arc(150,150,110,0,6.3);x.stroke();for(let k=0;k<N;k++){const a=2*Math.PI*k/N;x.fillStyle=`hsl(${k/N*360},80%,55%)`;x.beginPath();x.arc(150+110*Math.cos(a),150-110*Math.sin(a),6,0,6.3);x.fill()}x.strokeStyle='#facc15';x.lineWidth=3;x.beginPath();x.moveTo(150,150);x.lineTo(150+110*Math.cos(ang),150-110*Math.sin(ang));x.stroke();x.lineWidth=1}
+setInterval(()=>{if(run&&!rm.checked){ang+=.03;d2()}},30);redraw.push(d2);$('#nr').oninput=d2;
+const mm=()=>{const a=+$('#ma').value,n=+$('#mn').value;$('#mr').textContent=` = ${((a%n)+n)%n}`};$('#ma').oninput=$('#mn').oninput=mm;mm();
+/* ---------- QFT ---------- */
+function qft(v,inv){const N=v.length,s=inv?-1:1,q=Math.sqrt(N);return v.map((_,k)=>{let r=0,i=0;v.forEach((a,j)=>{const t=2*Math.PI*j*k/N*s,c=Math.cos(t),n=Math.sin(t);r+=a[0]*c-a[1]*n;i+=a[0]*n+a[1]*c});return[r/q,i/q]})}
+function dq(){const N=+$('#qn').value;$('#qj').max=N-1;let j=Math.min(+$('#qj').value,N-1),v=Array.from({length:N},()=>[0,0]);
+ if($('#qm').value==='b'){v[j]=[1,0];$('#qv').textContent=' j='+j}else{let p=Math.max(1,j);while(N%p)p--;$('#qv').textContent=' p='+p;v.forEach((a,i)=>{if(i%p==0)a[0]=1/Math.sqrt(N/p)})}
+ const f=qft(v);bars('#q1',v);bars('#q2',f);bars('#q3',qft(f,1))}
+['#qn','#qm','#qj'].forEach(s=>$(s).oninput=dq);redraw.push(dq);let qt;$('#qa').onclick=()=>{if(qt){clearInterval(qt);qt=0}else qt=setInterval(()=>{const r=$('#qj');r.value=(+r.value+1)%(+r.max+1);dq()},900)};
+stepper('#n1','#nb1','#nr1',['<b>Given:</b> |1⟩ = |01⟩ (j=1), n=2, N=4, ω=e^(2πi/4)=i','<b>Formula:</b> QFT|j⟩ = (1/√N)Σ ω^(jk)|k⟩ (a phase ω^(jk) for every k)','<b>Phases (j=1):</b> k=0→i⁰=1, k=1→i¹=i, k=2→i²=−1, k=3→i³=−i','<b>Result:</b> ½(|00⟩ + i|01⟩ − |10⟩ − i|11⟩): all four have equal height, the phase turns 90° each step 🔄','<b>Check:</b> 4 × (½)² = 1 ✅ normalised']);
+/* ---------- QPE ---------- */
+function dp(){const phi=+$('#pf').value,t=+$('#pt').value,M=2**t;$('#pfv').textContent=' φ='+phi.toFixed(3);$('#ptv').textContent=' t='+t+' (M='+M+')';
+ const pr=[];for(let k=0;k<M;k++){let d=phi-k/M,den=M*Math.sin(Math.PI*d);pr.push(Math.abs(den)<1e-9?1:(Math.sin(Math.PI*M*d)/den)**2)}
+ const mx=Math.max(...pr),bi=pr.indexOf(mx);bars('#p1',pr,(i)=>i===bi?'#facc15':'#38bdf8');
+ $('#pinfo').innerHTML=`Most likely outcome: k=${bi} → φ ≈ ${bi}/${M} = <b>${(bi/M).toFixed(4)}</b> (P=${(mx*100).toFixed(1)}%), error ${Math.abs(bi/M-phi).toFixed(4)}`}
+$('#pf').oninput=$('#pt').oninput=dp;redraw.push(dp);
+stepper('#n2','#nb2','#nr2',['<b>Given:</b> U|u⟩ = e^(2πi·¼)|u⟩ = i|u⟩, t=2 counting qubits, M=4','<b>Step 1:</b> H on counting qubits → ½Σ|x⟩','<b>Step 2:</b> controlled-U^(2^k) → phase e^(2πi·φx) = i^x on |x⟩ (phase kickback)','<b>Step 3:</b> state ½(|0⟩+i|1⟩−|2⟩−i|3⟩) = QFT|1⟩ (the previous numerical!)','<b>Step 4:</b> QFT⁻¹ → |01⟩ → k=1, φ = 1/4 ✅ exact. For φ=1/3, use the slider above: the peak is spread around k≈1.33/4 (approximate).']);
+/* ---------- Period finding ---------- */
+function ord(a,N){if(gcd(a,N)>1)return 0;let r=1,x=a%N;while(x!==1){x=x*a%N;r++}return r}
+function cf(k,Q){let a=k,b=Q,co=[],h0=1,h1=0,k0=0,k1=1,out=[];while(b){const q=Math.floor(a/b);co.push(q);[a,b]=[b,a-q*b];[h0,h1]=[q*h0+h1,h0];[k0,k1]=[q*k0+k1,k0];out.push(h0+'/'+k0)}return{co,out}}
+function df(){const N=+$('#fN').value,a=+$('#fa').value,r=ord(a,N),Q=64;if(!r){$('#fi').textContent=' ⚠️ gcd(a,N)>1, choose an a coprime to N';return}
+ $('#fi').textContent=' order r = '+r;const f=[...Array(Q)].map((_,x)=>mp(a,x,N)/N);bars('#f1',f,()=>'#a78bfa');
+ const v=[...Array(Q)].map((_,x)=>[mp(a,x,N)===1?1:0,0]),s=Math.sqrt(v.filter(z=>z[0]).length),w=qft(v.map(z=>[z[0]/s,0])),pr=w.map(z=>z[0]**2+z[1]**2),mx=Math.max(...pr);bars('#f2',pr.map(p=>p/mx),()=>'#34d399');
+ let k=1,best=0;for(let i=1;i<Q;i++)if(pr[i]>pr[best]||!best)best=i;k=best;const c=cf(k,Q);
+ $('#fcf').innerHTML=`Peak: k=${k}, k/Q = ${k}/${Q}<br>Continued fraction: [${c.co.join(', ')}] → convergents: ${c.out.join(', ')}<br>The denominator (smaller than N) that gives a^r≡1 is <b>r=${r}</b> ✅ (Q=64 does not divide every r exactly, so peaks can look slightly spread out.)`}
+$('#fN').onchange=$('#fa').oninput=df;redraw.push(df);
+/* ---------- Order finding steps ---------- */
+let oS=[],oi=0;function oRes(){const N=+$('#oN').value,a=+$('#oa').value;$('#o1').innerHTML='';oi=0;oS=[];const g=gcd(a,N);
+ if(N<4||a<2||a>=N)oS=['Use N≥4 and 1<a<N'];else if(g>1)oS=[`gcd(${a},${N}) = ${g} &gt; 1 → a factor found directly: ${g} × ${N/g}`];else{const r=ord(a,N);let t='';for(let x=0;x<=Math.min(r,12);x++)t+=`<td>${mp(a,x,N)}</td>`;
+  oS=[`<b>Step 1:</b> gcd(${a},${N}) = 1 ✅ coprime`,`<b>Step 2: f(x)=${a}^x mod ${N}</b><table><tr>${[...Array(Math.min(r,12)+1).keys()].map(x=>'<th>'+x+'</th>').join('')}</tr><tr>${t}</tr></table>`,`<b>Step 3:</b> f(x)=1 first equals 1 at x=<b>${r}</b> → order r = ${r}`];
+  if(r%2)oS.push(`<b>Step 4:</b> r odd ❌ → choose a new a`);else{const x=mp(a,r/2,N);oS.push(`<b>Step 4:</b> r even ✅, x = ${a}^${r/2} mod ${N} = ${x}`);
+   if(x===N-1)oS.push(`<b>Step 5:</b> x ≡ −1 (mod N) ❌ useless, choose a new a`);else oS.push(`<b>Step 5:</b> gcd(${x}−1,${N}) = ${gcd(x-1,N)}, gcd(${x}+1,${N}) = ${gcd(x+1,N)}`,`<b>🎉 Factors:</b> ${N} = ${gcd(x-1,N)} × ${gcd(x+1,N)}`)}}}
+$('#ob').onclick=()=>{if(!oS.length)oRes();if(oi<oS.length){const d=document.createElement('div');d.className='st';d.innerHTML=oS[oi++];$('#o1').append(d)}};$('#or').onclick=oRes;$('#oN').oninput=$('#oa').oninput=()=>{oS=[];$('#o1').innerHTML='';oi=0};
+/* ---------- HSP ---------- */
+let hs=[];function dh(){const N=+$('#hN').value,d=+$('#hd').value,el=$('#hdots');el.innerHTML='';for(let i=0;i<N;i++){const s=document.createElement('span');s.textContent=i;s.style.background=`hsl(${(i%d)/d*360},75%,60%)`;el.append(s)}
+ const g=hs.reduce(gcd,N);$('#hout').innerHTML=`H = {${[...Array(N/d).keys()].map(i=>i*d).join(', ')}} (${d} cosets)<br>Samples k: ${hs.join(', ')||'none yet'}<br>${hs.length?`gcd(samples, N) = ${g} → d ≈ N/${g} = <b>${N/g}</b> ${N/g===d?'✅ H found!':'(take more samples)'}`:''}`}
+function hdd(){const N=+$('#hN').value,s=$('#hd');s.innerHTML='';for(let d=2;d<N;d++)if(N%d===0)s.innerHTML+=`<option>${d}</option>`;hs=[];dh()}
+$('#hN').onchange=hdd;$('#hd').onchange=()=>{hs=[];dh()};$('#hr').onclick=()=>{hs=[];dh()};$('#hs').onclick=()=>{const N=+$('#hN').value,d=+$('#hd').value;hs.push(Math.floor(Math.random()*d)*N/d);dh()};hdd();
+/* ---------- Quiz ---------- */
+const Q=[['What is ω in the QFT?',['e^(2πi/N)','e^N','2π/N'],0,'The N-th root of unity.'],['What changes in the inverse QFT?',['ω → ω⁻¹','N → 2N','Remove the H gates'],0,'Phases become negative.'],['How big is N for n qubits?',['n','2ⁿ','n²'],1,'N = 2ⁿ.'],['What does QPE find?',['Eigenphase φ','A prime','Square of the period'],0,'U|u⟩=e^(2πiφ)|u⟩.'],['QPE with φ=1/4, t=2 qubits gives?',['Exact answer','Approximate','Fails'],0,'1/4 = 0.01 in binary.'],['Order of 7 mod 15?',['2','4','8'],1,'7⁴=2401≡1.'],['Factors from r=4, a=7, N=15?',['3 and 5','1 and 15','2 and 7'],0,'7²=49≡4; gcd(3,15)=3, gcd(5,15)=5.'],['Order finding is based on?',['Phase Estimation','Sorting','Bubble sort'],0,'U|y⟩=|ay mod N⟩.'],["Simon's problem lives on which group?",['Z₂ⁿ','S₅','R'],0,'A special case of HSP.'],['Non-abelian HSP is?',['Solved','Open / hard','Trivial'],1,'Dihedral and S_n cases are open.']];
+let sc=0,dn=0;Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q';d.innerHTML=`<b>${i+1}. ${q[0]}</b>`;q[1].forEach((o,j)=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{if(d.dataset.d)return;d.dataset.d=1;dn++;b.className=j===q[2]?'ok':'no';if(j===q[2])sc++;d.append(Object.assign(document.createElement('div'),{className:'how',textContent:(j===q[2]?'✅ Correct! ':'❌ Wrong. ')+q[3]}));$('#score').textContent=`Score: ${sc}/${Q.length} (${dn} attempted)`};d.append(b)});$('#quiz').append(d)});$('#score').textContent='Score: 0/10';
+dq();dp();df();d2();
+</script></body></html>
