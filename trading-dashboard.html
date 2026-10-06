@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="galaxy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gold & BTC Trading Desk</title>
+<style>
+:root{--text:#eef0ff;--muted:#a3a8c8;--card:rgba(18,16,48,.62);--bd:rgba(160,150,255,.28);--a:#9d7bff;--b:#4cc9f0;--up:#2ee59d;--dn:#ff5c7a;--bg:radial-gradient(ellipse at 20% 10%,#3b1d7a 0,transparent 55%),radial-gradient(ellipse at 80% 90%,#12307a 0,transparent 55%),#070718}
+[data-theme=blackhole]{--text:#fff3e6;--muted:#c9ab92;--card:rgba(10,6,4,.7);--bd:rgba(255,150,60,.35);--a:#ff9a3c;--b:#ffe3b0;--bg:radial-gradient(circle at 50% 40%,#2a1204 0,#000 60%)}
+[data-theme=supernova]{--text:#fff1e8;--muted:#e0b39d;--card:rgba(40,8,6,.66);--bd:rgba(255,110,50,.38);--a:#ff6a2b;--b:#ffd23f;--bg:radial-gradient(circle at 50% 45%,#5a1208 0,#1a0403 70%)}
+[data-theme=aurora]{--text:#e9fff6;--muted:#93c9b6;--card:rgba(5,28,30,.62);--bd:rgba(60,240,180,.3);--a:#2ee6b0;--b:#6ad0ff;--bg:linear-gradient(#020d18,#04202a 70%,#06303a)}
+[data-theme=cyber]{--text:#f4f1ff;--muted:#b5a8e0;--card:rgba(14,6,34,.72);--bd:rgba(255,45,170,.45);--a:#ff2daa;--b:#19f0ff;--bg:linear-gradient(#0a0220,#12053a)}
+[data-theme=ocean]{--text:#e8fbff;--muted:#8fc4d6;--card:rgba(2,24,48,.64);--bd:rgba(60,200,255,.3);--a:#27c7ff;--b:#5cffd8;--bg:linear-gradient(#012a4a,#01162e 70%,#000b1a)}
+[data-theme=sunset]{--text:#fff4ec;--muted:#f0c3b3;--card:rgba(60,18,60,.55);--bd:rgba(255,170,120,.4);--a:#ff8a4c;--b:#ff5fa2;--bg:linear-gradient(#3a1457,#b0346b 55%,#ff8a4c)}
+[data-theme=paper]{--text:#1d2230;--muted:#5b6275;--card:rgba(255,255,255,.92);--bd:#d9dce6;--a:#2a5bd7;--b:#0b8f6a;--up:#0a9d62;--dn:#d6304b;--bg:#f4f5f8}
+*{box-sizing:border-box}html{scroll-padding-top:70px}
+body{margin:0;font:15px/1.5 "Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--text);background:var(--bg);background-attachment:fixed;min-height:100vh;transition:background .4s}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,header{position:relative;z-index:1}
+header{position:sticky;top:0;z-index:5;padding:10px 16px;backdrop-filter:blur(14px);background:var(--card);border-bottom:1px solid var(--bd)}
+.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+h1{margin:0;font:700 20px Georgia,serif;letter-spacing:.3px}
+h2{margin:0 0 10px;font:700 17px Georgia,serif}
+.themes{display:flex;gap:6px;overflow-x:auto;padding:6px 0 2px;max-width:100%}
+.themes button,.tabs button,.sel button{border:1px solid var(--bd);background:transparent;color:var(--text);padding:6px 12px;border-radius:99px;cursor:pointer;white-space:nowrap;font:inherit;font-size:13px}
+.themes button.on,.tabs button.on,.sel button.on{background:linear-gradient(90deg,var(--a),var(--b));color:#fff;border-color:transparent;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+button:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+main{max-width:1400px;margin:auto;padding:14px;display:grid;gap:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;backdrop-filter:blur(10px);min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:900px){.grid,.two{grid-template-columns:1fr}}
+.sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+#chart{height:540px}#cal{height:520px;overflow:hidden}
+.tf{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px}
+.sig{border:1px solid var(--bd);border-radius:12px;padding:10px 12px}
+.sig h3{margin:0;font-size:14px;display:flex;justify-content:space-between}
+.tag{font-weight:800;padding:1px 10px;border-radius:99px;color:#fff}
+.BUY{background:var(--up)}.SELL{background:var(--dn)}.WAIT{background:#7b8099}
+.sig dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}
+.sig dt{color:var(--muted)}.sig dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:9px;background:var(--dn);overflow:hidden;margin:8px 0 2px}.bar i{display:block;height:100%;background:var(--up)}
+.pr{display:flex;gap:18px;flex-wrap:wrap;align-items:baseline}.pr b{font-size:26px}
+.up{color:var(--up)}.dn{color:var(--dn)}.m{color:var(--muted);font-size:12.5px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+#news{max-height:470px;overflow:auto}
+#news a{display:block;color:var(--text);text-decoration:none;padding:9px 0;border-bottom:1px solid var(--bd)}
+#news a:hover{color:var(--b)}
+.note{font-size:12.5px;color:var(--muted);border-left:3px solid var(--dn);padding-left:10px}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<header>
+ <div class="top"><h1>Gold &amp; BTC Trading Desk</h1><span class="m" id="clock"></span></div>
+ <div class="themes" id="themes" role="group" aria-label="Theme"></div>
+</header>
+<main>
+ <div class="card" style="padding:4px 8px"><div id="tape" style="height:76px"></div></div>
+ <div class="grid">
+  <section class="card">
+   <div class="sel" id="assets"></div>
+   <div id="chart"></div>
+  </section>
+  <section class="card">
+   <h2>Live signal</h2>
+   <div class="pr"><b id="px">-</b><span id="chg"></span><span class="m" id="src"></span></div>
+   <div class="bar" id="ovbar"><i style="width:50%"></i></div>
+   <div class="m" id="ovtxt">Loading...</div>
+   <div class="tf" id="tf" style="margin-top:12px"></div>
+  </section>
+ </div>
+ <div class="two">
+  <section class="card">
+   <h2>News</h2>
+   <div class="tabs" id="ntabs"></div>
+   <div id="news">Loading news...</div>
+  </section>
+  <section class="card"><h2>Upcoming events (USD, EUR, JPY, CNY, GBP, INR)</h2><div id="cal"></div></section>
+ </div>
+ <p class="note">Signals are generated from RSI, EMA 20/50, MACD and ATR on live Binance candles. Gold uses PAXG (gold-backed token) as a live proxy for XAUUSD, so price can differ slightly from your broker. Win % is a walk-forward test on the last 500 candles of each timeframe and does not guarantee future results. This is not financial advice. Test on a demo account and risk only a small part of your capital per trade.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const THEMES=[['galaxy','Galaxy'],['blackhole','Black Hole'],['supernova','Supernova'],['aurora','Aurora'],['cyber','Cyberpunk Neon'],['ocean','Deep Ocean'],['sunset','Sunset Retro'],['paper','Light Paper']];
+const ASSETS=[['Gold XAUUSD','PAXGUSDT','OANDA:XAUUSD'],['BTC','BTCUSDT','BINANCE:BTCUSDT'],['ETH','ETHUSDT','BINANCE:ETHUSDT'],['EURUSD','EURUSDT','FX:EURUSD'],['GBPUSD','GBPUSDT','FX:GBPUSD'],['SOL','SOLUSDT','BINANCE:SOLUSDT'],['XRP','XRPUSDT','BINANCE:XRPUSDT']];
+const TFS=[['Scalp','5m'],['Intraday','1h'],['Day','4h'],['Week','1d'],['Month','1w']];
+const NEWS=[['Gold','gold price OR XAUUSD'],['Bitcoin','bitcoin OR ethereum OR crypto'],['US / Fed','Federal Reserve OR US dollar OR US inflation'],['China','China economy OR PBOC OR yuan'],['Japan','Bank of Japan OR yen'],['Global','global markets OR oil OR geopolitics'],['Forex','forex OR EURUSD']];
+let T='galaxy',A=0,N=0,gen=0;
+const light=()=>T==='paper';
+
+/* ---------- themes + background ---------- */
+const cv=$('bg'),cx=cv.getContext('2d');let W,H,P=[],t=0;
+const R=(a,b)=>a+Math.random()*(b-a);
+function mk(){
+ if(T==='galaxy')return{x:R(0,W),y:R(0,H),r:R(.3,1.8),p:R(0,6.3),s:R(.5,2)};
+ if(T==='blackhole')return{a:R(0,6.3),d:R(70,Math.min(W,H)*.55+80),h:R(0,1)};
+ if(T==='supernova'){const a=R(0,6.3),v=R(.5,4);return{x:W/2,y:H*.45,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:R(60,200),hu:R(0,55)}}
+ if(T==='ocean')return{x:R(0,W),y:R(0,H),r:R(2,12),s:R(.2,1),w:R(0,6.3)};
+ if(T==='sunset')return{x:R(0,W),y:R(0,H),r:R(1,3),s:R(.1,.5)};
+}
+function init(){P=[];const n={galaxy:170,blackhole:520,supernova:260,ocean:60,sunset:70}[T]||0;for(let i=0;i<n;i++)P.push(mk())}
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;init()}
+function frame(){
+ t+=.016;cx.clearRect(0,0,W,H);cx.globalCompositeOperation='source-over';
+ if(T==='galaxy'){cx.fillStyle='#fff';P.forEach(p=>{cx.globalAlpha=.25+.75*Math.abs(Math.sin(t*p.s+p.p));cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.3);cx.fill()})}
+ else if(T==='blackhole'){
+  const X=W/2,Y=H*.42,m=Math.min(W,H)*.55+80;cx.globalCompositeOperation='lighter';
+  P.forEach(p=>{p.a+=1.6/p.d;const k=1-(p.d-70)/m,x=X+Math.cos(p.a)*p.d*1.5,y=Y+Math.sin(p.a)*p.d*.32;cx.fillStyle=`hsl(${28+k*25},100%,${45+k*45}%)`;cx.globalAlpha=.35+k*.6;cx.fillRect(x,y,1.8,1.8)});
+  cx.globalCompositeOperation='source-over';cx.globalAlpha=1;let g=cx.createRadialGradient(X,Y,30,X,Y,95);g.addColorStop(0,'#000');g.addColorStop(.7,'#000');g.addColorStop(1,'rgba(255,170,80,0)');cx.fillStyle=g;cx.beginPath();cx.arc(X,Y,95,0,6.3);cx.fill()}
+ else if(T==='supernova'){cx.globalCompositeOperation='lighter';P.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;p.l--;if(p.l<0)P[i]=mk();cx.globalAlpha=Math.max(p.l/200,0);cx.fillStyle=`hsl(${p.hu},100%,55%)`;cx.beginPath();cx.arc(p.x,p.y,2,0,6.3);cx.fill()})}
+ else if(T==='aurora'){cx.globalCompositeOperation='lighter';for(let k=0;k<4;k++){const g=cx.createLinearGradient(0,H*.05,0,H*.6);g.addColorStop(0,k%2?'rgba(60,160,255,.0)':'rgba(40,255,170,.0)');g.addColorStop(.35,k%2?'rgba(90,120,255,.28)':'rgba(40,255,170,.3)');g.addColorStop(1,'rgba(0,0,0,0)');cx.fillStyle=g;cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W;x+=12)cx.lineTo(x,H*.22+k*34+Math.sin(x*.004+t*.5+k)*60+Math.sin(x*.011+t*.9+k*2)*24);cx.lineTo(W,H);cx.fill()}}
+ else if(T==='cyber'){const hz=H*.55;cx.lineWidth=1.2;cx.strokeStyle='#ff2daa';cx.shadowColor='#ff2daa';cx.shadowBlur=8;for(let i=-24;i<=24;i++){cx.beginPath();cx.moveTo(W/2+i*20,hz);cx.lineTo(W/2+i*W/8,H);cx.stroke()}cx.strokeStyle='#19f0ff';cx.shadowColor='#19f0ff';for(let j=0;j<12;j++){const z=((j+t*.8)%12)/12,y=hz+(H-hz)*z*z;cx.beginPath();cx.moveTo(0,y);cx.lineTo(W,y);cx.stroke()}cx.shadowBlur=0}
+ else if(T==='ocean'){cx.strokeStyle='rgba(120,240,255,.7)';cx.lineWidth=1;P.forEach(p=>{p.y-=p.s;p.x+=Math.sin(t+p.w)*.3;if(p.y<-20){p.y=H+20;p.x=R(0,W)}cx.globalAlpha=.5;cx.fillStyle='rgba(60,255,220,.12)';cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.3);cx.fill();cx.stroke()})}
+ else if(T==='sunset'){const X=W/2,Y=H*.72,g=cx.createRadialGradient(X,Y,10,X,Y,170);g.addColorStop(0,'#fff2b0');g.addColorStop(.5,'#ff9a5a');g.addColorStop(1,'rgba(255,90,140,0)');cx.fillStyle=g;cx.beginPath();cx.arc(X,Y,170+Math.sin(t)*5,0,6.3);cx.fill();cx.fillStyle='#ffe6c8';P.forEach(p=>{p.y-=p.s;if(p.y<0)p.y=H;cx.globalAlpha=.5;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.3);cx.fill()})}
+ cx.globalAlpha=1;requestAnimationFrame(frame)}
+function setTheme(k){T=k;document.documentElement.dataset.theme=k;localStorage.setItem('th',k);init();document.querySelectorAll('#themes button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));loadChart();loadCal();loadTape()}
+addEventListener('resize',rs);
+
+/* ---------- TradingView widgets ---------- */
+function tv(id,file,cfg){const el=$(id);el.innerHTML='<div class="tradingview-widget-container" style="height:100%;width:100%"><div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div></div>';const s=document.createElement('script');s.src='https://s3.tradingview.com/external-embedding/embed-widget-'+file+'.js';s.async=true;s.text=JSON.stringify(cfg);el.firstChild.appendChild(s)}
+const th=()=>light()?'light':'dark';
+function loadChart(){tv('chart','advanced-chart',{autosize:true,symbol:ASSETS[A][2],interval:'60',timezone:'Asia/Kolkata',theme:th(),style:'1',locale:'en',allow_symbol_change:true,hide_side_toolbar:false,studies:['RSI@tv-basicstudies','MACD@tv-basicstudies'],support_host:'https://www.tradingview.com'})}
+function loadCal(){tv('cal','events',{colorTheme:th(),isTransparent:true,width:'100%',height:'520',locale:'en',importanceFilter:'0,1',currencyFilter:'USD,EUR,JPY,CNY,GBP,INR'})}
+function loadTape(){tv('tape','ticker-tape',{symbols:[{proName:'OANDA:XAUUSD',title:'Gold'},{proName:'BINANCE:BTCUSDT',title:'BTC'},{proName:'BINANCE:ETHUSDT',title:'ETH'},{proName:'FX:EURUSD',title:'EURUSD'},{proName:'FX:USDJPY',title:'USDJPY'},{proName:'TVC:DXY',title:'DXY'},{proName:'TVC:US10Y',title:'US10Y'},{proName:'NSE:NIFTY',title:'Nifty'}],colorTheme:th(),isTransparent:true,displayMode:'adaptive',locale:'en'})}
+
+/* ---------- indicators ---------- */
+function ema(a,n){const k=2/(n+1);let e=a[0];return a.map((v,i)=>i?e=v*k+e*(1-k):e)}
+function rsi(c,n=14){const o=Array(c.length).fill(50);let g=0,l=0;for(let i=1;i<c.length;i++){const d=c[i]-c[i-1];if(i<=n){g+=Math.max(d,0);l+=Math.max(-d,0);if(i===n){g/=n;l/=n;o[i]=100-100/(1+g/(l||1e-9))}}else{g=(g*(n-1)+Math.max(d,0))/n;l=(l*(n-1)+Math.max(-d,0))/n;o[i]=100-100/(1+g/(l||1e-9))}}return o}
+function atr(h,l,c,n=14){const tr=h.map((x,i)=>i?Math.max(x-l[i],Math.abs(x-c[i-1]),Math.abs(l[i]-c[i-1])):x-l[i]);return ema(tr,n)}
+function ind(k){const c=k.map(x=>+x[4]),h=k.map(x=>+x[2]),l=k.map(x=>+x[3]),e12=ema(c,12),e26=ema(c,26),ml=c.map((_,i)=>e12[i]-e26[i]),sg=ema(ml,9);return{c,h,l,e20:ema(c,20),e50:ema(c,50),hist:ml.map((v,i)=>v-sg[i]),r:rsi(c),at:atr(h,l,c)}}
+function score(I,i){let s=0;s+=I.e20[i]>I.e50[i]?1:-1;s+=I.c[i]>I.e50[i]?1:-1;s+=I.hist[i]>0?1:-1;const r=I.r[i];s+=r<30?1:r>70?-1:r>50?.5:-.5;return s}
+function backtest(I,N=12){let w=0,lo=0,gain=0,loss=0;for(let i=60;i<I.c.length-N-1;i++){const s=score(I,i);if(Math.abs(s)<2)continue;const d=s>0?1:-1,e=I.c[i],a=I.at[i],sl=e-d*1.5*a,tp=e+d*2.25*a;let res=0,j=i+1;for(;j<=i+N;j++){const hs=d>0?I.l[j]<=sl:I.h[j]>=sl,ht=d>0?I.h[j]>=tp:I.l[j]<=tp;if(hs){res=-1;break}if(ht){res=1.5;break}}if(!res){res=(I.c[i+N]-e)*d>0?.5:-.5;j=i+N}res>0?(w++,gain+=res):(lo++,loss-=res);i=j}const n=w+lo;return{n,win:n?w/n*100:0,exp:n?(gain-loss)/n:0}}
+const f=(v,p)=>v>=1000?v.toLocaleString('en-US',{maximumFractionDigits:2}):v.toFixed(p);
+
+/* ---------- signals ---------- */
+async function kl(sym,iv){const r=await fetch(`https://api.binance.com/api/v3/klines?symbol=${sym}&interval=${iv}&limit=500`);if(!r.ok)throw 0;return r.json()}
+async function loadSig(){
+ const my=++gen,sym=ASSETS[A][1],dp=sym.startsWith('EUR')||sym.startsWith('GBP')?5:sym.startsWith('XRP')?4:2;
+ try{
+  const [tk,...ks]=await Promise.all([fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym).then(r=>r.json()),...TFS.map(x=>kl(sym,x[1]))]);
+  if(my!==gen)return;
+  const ch=+tk.priceChangePercent;$('px').textContent=f(+tk.lastPrice,dp);$('chg').innerHTML=`<span class="${ch>=0?'up':'dn'}">${ch>=0?'+':''}${ch.toFixed(2)}% (24h)</span>`;
+  $('src').textContent=sym==='PAXGUSDT'?'PAXG proxy for XAUUSD':'Binance '+sym;
+  let tot=0,html='';
+  ks.forEach((k,i)=>{const I=ind(k),n=I.c.length-1,s=score(I,n),e=I.c[n],a=I.at[n],d=s>=2?1:s<=-2?-1:0,up=Math.max(8,Math.min(92,50+s*11)),bt=backtest(I);tot+=s;
+   const lab=d>0?'BUY':d<0?'SELL':'WAIT';
+   html+=`<div class="sig"><h3>${TFS[i][0]} <span class="m">${TFS[i][1]}</span><span class="tag ${lab}">${lab}</span></h3>
+   <div class="bar"><i style="width:${up}%"></i></div><div class="m">Up ${up.toFixed(0)}% / Down ${(100-up).toFixed(0)}%</div>
+   <dl><dt>Entry</dt><dd>${f(e,dp)}</dd>${d?`<dt>Stop loss</dt><dd class="dn">${f(e-d*1.5*a,dp)}</dd><dt>Target 1</dt><dd class="up">${f(e+d*1.5*a*1.5,dp)}</dd><dt>Target 2</dt><dd class="up">${f(e+d*1.5*a*3,dp)}</dd>`:`<dt>Plan</dt><dd>Wait, no clear setup</dd>`}
+   <dt>RSI</dt><dd>${I.r[n].toFixed(0)}</dd><dt>Win % (test)</dt><dd><b>${bt.win.toFixed(0)}%</b> of ${bt.n}</dd><dt>Expectancy</dt><dd class="${bt.exp>0?'up':'dn'}">${bt.exp>=0?'+':''}${bt.exp.toFixed(2)}R</dd></dl></div>`});
+  $('tf').innerHTML=html;
+  const up=Math.max(8,Math.min(92,50+tot/ks.length*11));$('ovbar').firstChild.style.width=up+'%';
+  $('ovtxt').innerHTML=`Overall bias: <b class="${up>=50?'up':'dn'}">${up>=58?'Gold/Asset likely UP':up<=42?'Likely DOWN':'Sideways, wait'}</b> (Up ${up.toFixed(0)}% / Down ${(100-up).toFixed(0)}%). Stop loss = 1.5 x ATR, Target 1 = 1.5R, Target 2 = 3R. Updates every 30s.`;
+ }catch(e){if(my===gen)$('ovtxt').textContent='Could not load Binance data. Open this file on a normal web server or check your internet / VPN.'}
+}
+
+/* ---------- news ---------- */
+const ago=d=>{const m=(Date.now()-new Date(d.replace(' ','T')+'Z'))/6e4;return m<60?Math.max(1,m|0)+' min ago':m<1440?(m/60|0)+' h ago':(m/1440|0)+' d ago'};
+async function loadNews(){
+ const my=N,q=NEWS[N][1];$('news').textContent='Loading news...';
+ try{const u='https://news.google.com/rss/search?q='+encodeURIComponent(q+' when:2d')+'&hl=en-IN&gl=IN&ceid=IN:en';
+  const r=await(await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(u))).json();if(my!==N)return;
+  $('news').innerHTML=(r.items||[]).slice(0,25).map(i=>`<a href="${i.link}" target="_blank" rel="noopener"><div>${i.title.replace(/</g,'&lt;')}</div><div class="m">${ago(i.pubDate)}</div></a>`).join('')||'No news found.'}
+ catch(e){$('news').textContent='News feed could not load. Try again in a minute.'}}
+
+/* ---------- boot ---------- */
+THEMES.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.dataset.k=k;b.onclick=()=>setTheme(k);$('themes').appendChild(b)});
+ASSETS.forEach((a,i)=>{const b=document.createElement('button');b.textContent=a[0];b.className=i?'':'on';b.onclick=()=>{A=i;[...$('assets').children].forEach((x,j)=>x.classList.toggle('on',j===i));loadChart();loadSig()};$('assets').appendChild(b)});
+NEWS.forEach((a,i)=>{const b=document.createElement('button');b.textContent=a[0];b.className=i?'':'on';b.onclick=()=>{N=i;[...$('ntabs').children].forEach((x,j)=>x.classList.toggle('on',j===i));loadNews()};$('ntabs').appendChild(b)});
+setInterval(()=>$('clock').textContent=new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata',dateStyle:'medium',timeStyle:'medium'})+' IST',1000);
+let sv='galaxy';try{sv=localStorage.getItem('th')||'galaxy'}catch(e){}
+rs();requestAnimationFrame(frame);setTheme(THEMES.some(x=>x[0]===sv)?sv:'galaxy');loadSig();loadNews();
+setInterval(loadSig,30000);setInterval(loadNews,300000);
+</script>
+</body>
+</html>
