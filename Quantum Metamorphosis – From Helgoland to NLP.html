@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Quantum Metamorphosis – From Helgoland to NLP</title>
+<style>
+:root{--bg:#070b1f;--fg:#e8ecff;--card:rgba(14,21,55,.82);--ac:#8ab4ff;--ac2:#c792ea;--bd:rgba(138,180,255,.4);--dim:rgba(138,180,255,.15);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=hole]{--bg:#050505;--fg:#fff1e0;--card:rgba(25,14,6,.85);--ac:#ff9a3c;--ac2:#ffd9a0;--bd:rgba(255,154,60,.45);--dim:rgba(255,154,60,.15)}
+:root[data-theme=nova]{--bg:#1a0504;--fg:#fff0e0;--card:rgba(45,10,6,.85);--ac:#ff6a2b;--ac2:#ffd23f;--bd:rgba(255,106,43,.5);--dim:rgba(255,106,43,.16)}
+:root[data-theme=aurora]{--bg:#04161a;--fg:#e6fff6;--card:rgba(5,35,40,.82);--ac:#3dffb0;--ac2:#2fd0e0;--bd:rgba(61,255,176,.4);--dim:rgba(61,255,176,.14)}
+:root[data-theme=cyber]{--bg:#0b0618;--fg:#f2eaff;--card:rgba(20,8,40,.85);--ac:#ff2e93;--ac2:#19f0ff;--bd:rgba(255,46,147,.55);--dim:rgba(25,240,255,.14)}
+:root[data-theme=ocean]{--bg:#02132b;--fg:#e4f6ff;--card:rgba(3,30,62,.82);--ac:#35b9ff;--ac2:#4dffd5;--bd:rgba(53,185,255,.45);--dim:rgba(53,185,255,.15)}
+:root[data-theme=sunset]{--bg:#2a0f3a;--fg:#fff3f6;--card:rgba(55,15,60,.84);--ac:#ffa066;--ac2:#ff6fb0;--bd:rgba(255,160,102,.5);--dim:rgba(255,111,176,.16)}
+:root[data-theme=paper]{--bg:#fbfaf6;--fg:#1c1c1c;--card:rgba(255,255,255,.93);--ac:#2f4fd0;--ac2:#b8400a;--bd:rgba(47,79,208,.35);--dim:rgba(47,79,208,.1)}
+html,body{height:auto;margin:0}body{background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:background .5s}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:14px 14px 40px}
+h1{font-size:clamp(1.4rem,4vw,2.2rem);margin:6px 0 2px;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{opacity:.85;font-size:.9rem;margin-bottom:8px}
+#themes{display:flex;gap:6px;overflow-x:auto;padding:6px 0 10px}
+button{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+button.on,button:hover{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.pg{display:none;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;backdrop-filter:blur(6px);animation:in .5s}
+.pg.on{display:block}@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+h2{margin:0 0 8px;color:var(--ac)}h3{color:var(--ac2);margin:14px 0 4px}
+.tag{display:inline-block;background:var(--dim);border:1px solid var(--bd);border-radius:8px;padding:2px 9px;margin:2px;font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.box{background:var(--dim);border:1px solid var(--bd);border-radius:12px;padding:12px}
+.key{border-left:4px solid var(--ac2);padding:6px 12px;margin:10px 0;background:var(--dim);border-radius:0 8px 8px 0}
+svg{max-width:100%;height:auto}.scroll{overflow-x:auto}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap}
+#dots{display:flex;gap:6px}#dots button{width:14px;height:14px;padding:0;border-radius:50%}
+.chip{display:inline-block;min-width:44px;text-align:center;padding:3px 9px;margin:2px;border-radius:8px;background:var(--ac);color:var(--bg);font-weight:600;font-size:.85rem}
+.chip.pad{background:transparent;color:var(--fg);border:1px dashed var(--bd);opacity:.7}.chip.m0{background:var(--dim);color:var(--fg)}
+.step{opacity:0;transform:translateX(-14px);animation:st .6s forwards}@keyframes st{to{opacity:1;transform:none}}
+input[type=text],textarea{width:100%;box-sizing:border-box;background:var(--dim);color:var(--fg);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font:inherit;margin:3px 0}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.bar{height:20px;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:4px;transition:width .5s;min-width:2px}
+.row{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:.9rem}.row b{min-width:78px}
+.wave{animation:wv 4s ease-in-out infinite alternate}@keyframes wv{to{transform:translateX(-30px)}}
+.pulse{animation:pl 2.5s ease-in-out infinite;transform-origin:center;transform-box:fill-box}@keyframes pl{50%{transform:scale(1.25);opacity:.6}}
+.spin{animation:sp 6s linear infinite;transform-origin:center;transform-box:fill-box}@keyframes sp{to{transform:rotate(360deg)}}
+</style></head><body><canvas id="bg"></canvas>
+<div class="wrap">
+<h1>Quantum Metamorphosis</h1><div class="sub">The story of Helgoland (Carlo Rovelli) + Quantum + NLP, Embeddings, Padding, Data Analysis — Written by <b>Vikash Patel</b></div>
+<div id="themes"></div>
+
+<section class="pg on"><h2>Page 1 · Introduction: What is this page?</h2>
+<div class="grid"><div>
+<p>This page is based on a real book: <b>Helgoland</b> by <b>Carlo Rovelli</b> (2021). It tells the story of the birth of quantum mechanics, and along the way we will see how quantum ideas connect to today's <b>NLP and Data Analysis</b>.</p>
+<div class="key">Starting from zero level: every page has a story or picture first, then a simulation, then a one-line revision.</div>
+<p>Keywords covered on this page:</p>
+<span class="tag">Matrix</span><span class="tag">Superposition</span><span class="tag">Measurement</span><span class="tag">Relational QM</span><span class="tag">NLP</span><span class="tag">Token</span><span class="tag">Padding</span><span class="tag">Word Vector Embedding</span><span class="tag">Cosine Similarity</span><span class="tag">Data Analysis</span>
+<p style="font-size:.85rem;opacity:.85">Note: the story details are written from memory, so please read the original book to confirm exact facts.</p></div>
+<svg viewBox="0 0 300 240" width="300" aria-label="Atom with orbiting electrons"><circle cx="150" cy="120" r="14" fill="var(--ac2)" class="pulse"/><g class="spin"><ellipse cx="150" cy="120" rx="95" ry="38" fill="none" stroke="var(--ac)" stroke-dasharray="4 5"/><circle cx="245" cy="120" r="7" fill="var(--ac)"/></g><g class="spin" style="animation-duration:9s;animation-direction:reverse"><ellipse cx="150" cy="120" rx="50" ry="95" fill="none" stroke="var(--ac2)" stroke-dasharray="3 6"/><circle cx="150" cy="25" r="6" fill="var(--ac2)"/></g><text x="150" y="228" text-anchor="middle" fill="var(--fg)" font-size="13">Atom: nucleus + electrons (the old picture)</text></svg></div></section>
+
+<section class="pg"><h2>Page 2 · The Story: Helgoland, 1925</h2>
+<svg viewBox="0 0 600 150" width="100%" aria-label="Island and sea"><rect width="600" height="150" fill="var(--dim)" rx="10"/><circle cx="500" cy="38" r="20" fill="var(--ac2)" class="pulse"/><path d="M200 105 L260 55 L320 70 L380 105Z" fill="var(--ac)" opacity=".8"/><circle cx="300" cy="62" r="5" fill="var(--fg)"/><text x="300" y="46" text-anchor="middle" fill="var(--fg)" font-size="12">Heisenberg (23)</text><g class="wave"><path d="M-40 112 q30 -14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 V150 H-40Z" fill="var(--ac)" opacity=".35"/><path d="M-40 125 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 V150 H-40Z" fill="var(--ac2)" opacity=".35"/></g></svg>
+<div id="story"></div>
+<div class="key">Lesson: when the old path stops working, drop the old picture. Heisenberg stopped tracking the electron's path and worked only with measured numbers.</div></section>
+
+<section class="pg"><h2>Page 3 · Matrices: Order Matters (A×B ≠ B×A)</h2>
+<p>With ordinary numbers, 3×5 = 5×3. In quantum mechanics, operations are <b>matrices</b>, and changing their order changes the answer. This was Heisenberg's discovery that night.</p>
+<div class="grid"><div class="box">
+<b>A = X gate</b> (0↔1 flip): [[0,1],[1,0]]<br><b>B = Z gate</b> (phase flip): [[1,0],[0,−1]]<br>Start vector v = (1, 0)<br><br>
+<button onclick="mrun('AB')">A first, then B</button> <button onclick="mrun('BA')">B first, then A</button>
+<div id="mres" style="margin-top:10px"></div></div>
+<svg viewBox="0 0 240 240" width="260" id="msvg"><rect width="240" height="240" fill="var(--dim)" rx="10"/><line x1="0" y1="120" x2="240" y2="120" stroke="var(--bd)"/><line x1="120" y1="0" x2="120" y2="240" stroke="var(--bd)"/><text x="228" y="114" fill="var(--fg)" font-size="11">x</text><text x="126" y="12" fill="var(--fg)" font-size="11">y</text><g id="marr"></g></svg></div>
+<div class="key">Remember: the order of quantum gates changes the result of a circuit. That is why the gate sequence in QFT and Grover is written so carefully.</div></section>
+
+<section class="pg"><h2>Page 4 · Superposition and Measurement</h2>
+<p>A qubit can be a mix of 0 and 1. When we <b>measure</b> it, we get only one answer, and the probability is decided by the angle.</p>
+<div class="grid"><div class="box">Angle θ: <b id="thv">60</b>°<input type="range" id="th" min="0" max="180" value="60"><div class="row"><b>P(0)</b><div class="bar" id="b0"></div><span id="p0"></span></div><div class="row"><b>P(1)</b><div class="bar" id="b1"></div><span id="p1"></span></div>
+<button onclick="meas(1)">Measure once</button> <button onclick="meas(100)">Measure 100 times</button><div id="mc" style="margin-top:8px"></div></div>
+<svg viewBox="0 0 240 240" width="240"><circle cx="120" cy="120" r="90" fill="var(--dim)" stroke="var(--bd)"/><text x="120" y="22" text-anchor="middle" fill="var(--fg)" font-size="13">|0⟩</text><text x="120" y="236" text-anchor="middle" fill="var(--fg)" font-size="13">|1⟩</text><line id="qv" x1="120" y1="120" x2="120" y2="30" stroke="var(--ac)" stroke-width="4" stroke-linecap="round"/><circle cx="120" cy="120" r="5" fill="var(--ac2)"/></svg></div>
+<div class="key">Real life: a coin spinning in the air is a mix of heads and tails. The moment it lands on your hand, you get one result. In quantum mechanics this mix is real, not just a lack of knowledge.</div></section>
+
+<section class="pg"><h2>Page 5 · Rovelli's Idea: Everything Is Relations</h2>
+<p>Rovelli (Relational Quantum Mechanics) says an electron has no property on its own. A property appears only when it <b>interacts</b> with something else.</p>
+<div class="grid"><div class="box"><label><input type="checkbox" id="cd" onchange="rel()"> Let it interact with the Detector</label><br><label><input type="checkbox" id="co" onchange="rel()"> Let it interact with You (the observer)</label><br><button onclick="rel(1)" style="margin-top:8px">Measure again</button><div id="rtxt" style="margin-top:8px"></div></div>
+<svg viewBox="0 0 300 220" width="300"><line id="l1" x1="150" y1="110" x2="50" y2="40" stroke="var(--ac)" stroke-width="3" opacity="0"/><line id="l2" x1="150" y1="110" x2="250" y2="40" stroke="var(--ac2)" stroke-width="3" opacity="0"/><circle cx="150" cy="110" r="30" fill="var(--ac)" class="pulse"/><text x="150" y="115" text-anchor="middle" fill="var(--bg)" font-size="12" font-weight="700">Electron</text><circle cx="50" cy="40" r="26" fill="var(--dim)" stroke="var(--bd)"/><text x="50" y="44" text-anchor="middle" fill="var(--fg)" font-size="11">Detector</text><circle cx="250" cy="40" r="26" fill="var(--dim)" stroke="var(--bd)"/><text x="250" y="44" text-anchor="middle" fill="var(--fg)" font-size="11">You</text><text x="150" y="190" text-anchor="middle" fill="var(--fg)" font-size="13" id="rs">spin = ?</text></svg></div>
+<div class="key">Real life: you are different with a friend, different with a teacher, different alone. All three are real. A person, too, is known through relations.</div></section>
+
+<section class="pg"><h2>Page 6 · NLP: Tokens and Padding</h2>
+<p>In <b>NLP</b> (Natural Language Processing), text must be converted into numbers for the computer. First, a sentence is split into <b>tokens</b> (words). The model needs all sentences to have the <b>same length</b>, so short sentences are filled with <b>PAD</b> tokens.</p>
+<input type="text" class="ln" value="quantum is really fascinating"><input type="text" class="ln" value="learn NLP padding"><input type="text" class="ln" value="qubit">
+Max length: <b id="mlv">5</b><input type="range" id="ml" min="2" max="8" value="5"><div id="pad"></div>
+<div class="key">The mask for PAD is 0: it tells the model this slot is empty, so ignore it. A longer sentence gets cut off (truncated).</div></section>
+
+<section class="pg"><h2>Page 7 · Word Vector Embeddings</h2>
+<p>In an embedding, every word becomes a <b>vector</b> (a list of numbers). Similar words end up close together. Here it is shown in 2D only; real embeddings have 300 to 1000+ dimensions. Click on two words.</p>
+<div class="grid"><div class="scroll"><svg viewBox="0 0 360 300" width="380" id="esvg" style="background:var(--dim);border-radius:10px"></svg></div><div class="box"><div id="eres">Pick two words.</div><br><button onclick="analogy()">king − man + woman = ?</button><button onclick="esel=[];edraw()" style="margin-left:6px">Reset</button></div></div>
+<div class="key">Quantum link: a qubit's state is also a vector. In both places, the angle between vectors (cosine similarity) tells how similar things are.</div></section>
+
+<section class="pg"><h2>Page 8 · Data Analysis and Revision</h2>
+<p>In quantum mechanics we measure many times and find patterns from the counts. In NLP, too, we count the words in a text to find patterns. Enter your own text below.</p>
+<textarea id="dt" rows="3">in the quantum world the order of a quantum gate matters and in NLP an embedding is a vector just like a quantum state</textarea><div id="dres"></div>
+<h3>Quick Revision (one line each)</h3><div class="grid">
+<div class="box">1. Heisenberg discovered matrices on Helgoland.</div><div class="box">2. A×B ≠ B×A: the order of gates matters.</div><div class="box">3. Superposition: a mix before measuring, one result after.</div><div class="box">4. Rovelli: a property arises from a relation.</div><div class="box">5. NLP: turn text into tokens and numbers.</div><div class="box">6. Padding: equal lengths for all sentences, PAD mask is 0.</div><div class="box">7. Embedding: similar words sit close, measured by cosine similarity.</div><div class="box">8. Data analysis: find patterns from counts.</div></div>
+<p style="text-align:center;margin-top:14px">Book: <b>Helgoland</b> by Carlo Rovelli · Written by <b>Vikash Patel</b></p></section>
+
+<div class="nav"><button onclick="go(pg-1)">← Previous</button><div id="dots"></div><span id="pn"></span><button onclick="go(pg+1)">Next →</button></div></div>
+<script>
+const $=s=>document.querySelector(s);let th='galaxy',t=0,pg=0;
+const T=[['galaxy','🌌 Galaxy'],['hole','🕳️ Black Hole'],['nova','💥 Supernova'],['aurora','🌿 Aurora'],['cyber','🌃 Cyberpunk'],['ocean','🌊 Deep Ocean'],['sunset','🌇 Sunset Retro'],['paper','📄 Light Paper']];
+const BG={galaxy:'#070b1f',hole:'#050505',nova:'#1a0504',aurora:'#04161a',cyber:'#0b0618',ocean:'#02132b',sunset:'#2a0f3a',paper:'#fbfaf6'};
+T.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.dataset.k=k;b.onclick=()=>setT(k);$('#themes').append(b)});
+function setT(k){th=k;document.documentElement.dataset.theme=k;document.querySelectorAll('#themes button').forEach(b=>b.classList.toggle('on',b.dataset.k==k))}
+setT(matchMedia('(prefers-color-scheme: light)').matches?'paper':'galaxy');
+const cv=$('#bg'),cx=cv.getContext('2d');let W,H;
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}addEventListener('resize',rs);rs();
+const P=Array.from({length:130},()=>({x:Math.random(),y:Math.random(),r:Math.random()*2+.6,a:Math.random()*6.28,s:Math.random()*.6+.25}));
+function frame(){t+=.016;cx.globalAlpha=1;cx.fillStyle=BG[th];cx.fillRect(0,0,W,H);
+if(th=='sunset'){const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2a0f3a');g.addColorStop(.6,'#a13a7a');g.addColorStop(1,'#ff8a4c');cx.fillStyle=g;cx.fillRect(0,0,W,H);const s=cx.createRadialGradient(W/2,H*.7,10,W/2,H*.7,150);s.addColorStop(0,'#fff2b0');s.addColorStop(1,'rgba(255,140,80,0)');cx.fillStyle=s;cx.beginPath();cx.arc(W/2,H*.7,150+Math.sin(t)*6,0,7);cx.fill()}
+P.forEach(p=>{let x,y;cx.globalAlpha=.8;
+if(th=='galaxy'){x=p.x*W;y=(p.y*H+t*5*p.s)%H;cx.globalAlpha=.3+.7*Math.abs(Math.sin(t*p.s*2+p.a));cx.fillStyle='#cfe0ff'}
+else if(th=='hole'){const r=60+p.x*Math.min(W,H)*.55,a=p.a+t*60*p.s/r*3;x=W/2+Math.cos(a)*r;y=H*.45+Math.sin(a)*r*.32;cx.fillStyle=p.s>.5?'#ff9a3c':'#fff1e0';cx.globalAlpha=.85}
+else if(th=='nova'){const d=(t*p.s*.1+p.x)%1;x=W/2+Math.cos(p.a)*d*W*.7;y=H/2+Math.sin(p.a)*d*H*.7;cx.fillStyle=`hsl(${15+45*(1-d)},100%,60%)`;cx.globalAlpha=1-d}
+else if(th=='aurora'){x=p.x*W;y=p.y*H*.6;cx.globalAlpha=.3+.6*Math.abs(Math.sin(t*p.s+p.a));cx.fillStyle='#e6fff6'}
+else if(th=='cyber'){x=p.x*W;y=(p.y*H-t*30*p.s+H)%H;cx.fillStyle=p.s>.5?'#ff2e93':'#19f0ff';cx.globalAlpha=.6}
+else if(th=='ocean'){x=p.x*W+Math.sin(t*p.s*2+p.a)*22;y=H-((t*25*p.s+p.y*H)%H);cx.strokeStyle='#4dffd5';cx.globalAlpha=.6;cx.beginPath();cx.arc(x,y,p.r*2.5,0,7);cx.stroke();return}
+else if(th=='sunset'){x=(p.x*W+t*10*p.s)%W;y=p.y*H;cx.fillStyle='#fff';cx.globalAlpha=.35}
+else{x=(p.x*W+t*8*p.s)%W;y=p.y*H+Math.sin(t*p.s+p.a)*12;cx.fillStyle='#2f4fd0';cx.globalAlpha=.14}
+cx.beginPath();cx.arc(x,y,p.r*(th=='paper'?2.5:1),0,7);cx.fill()});
+if(th=='hole'){const g=cx.createRadialGradient(W/2,H*.45,10,W/2,H*.45,120);g.addColorStop(0,'#000');g.addColorStop(.35,'#000');g.addColorStop(.5,'rgba(255,140,40,.55)');g.addColorStop(1,'rgba(255,140,40,0)');cx.globalAlpha=1;cx.fillStyle=g;cx.beginPath();cx.arc(W/2,H*.45,120,0,7);cx.fill()}
+if(th=='aurora'){for(let i=0;i<3;i++){cx.beginPath();for(let x=0;x<=W;x+=12){const y=H*.32+i*45+Math.sin(x*.004+t*.6+i)*55;x?cx.lineTo(x,y):cx.moveTo(x,y)}cx.strokeStyle=['#3dffb0','#2fd0e0','#9d7bff'][i];cx.globalAlpha=.2;cx.lineWidth=42;cx.stroke()}cx.lineWidth=1}
+if(th=='cyber'){const hz=H*.58;cx.globalAlpha=.5;cx.lineWidth=1;cx.strokeStyle='#19f0ff';for(let i=-12;i<=12;i++){cx.beginPath();cx.moveTo(W/2,hz);cx.lineTo(W/2+i*W*.12,H);cx.stroke()}cx.strokeStyle='#ff2e93';for(let k=0;k<12;k++){const z=((k+t*.7)%12)/12,y=hz+(H-hz)*z*z;cx.beginPath();cx.moveTo(0,y);cx.lineTo(W,y);cx.stroke()}}
+requestAnimationFrame(frame)}frame();
+
+const S=[['1925 · Helgoland','Werner Heisenberg suffered a severe bout of hay fever. His doctor told him to leave the city, so he went to Helgoland, a lonely island in the North Sea.'],['The old picture','Everyone believed the electron circles the nucleus like a planet. But the calculations did not match the measurements.'],['A bold step','Heisenberg said: stop talking about what we cannot see (the electron path). Write down only what is measured, such as the light coming out of an atom.'],['A night of calculation','He arranged the measured numbers in tables (rows and columns) and found something strange: A×B and B×A give different answers. These tables turned out to be matrices.'],['What happened next','Born and Jordan explained the math of matrices, and Schrödinger gave the wave approach. Bohr and Einstein debated randomness in nature.'],['Rovelli\'s twist','Rovelli says: a property arises from relations, not in isolation. This is called Relational Quantum Mechanics.']];
+$('#story').innerHTML=S.map((s,i)=>`<div class="box step" style="animation-delay:${i*.35}s;margin:8px 0"><b style="color:var(--ac2)">${i+1}. ${s[0]}</b><br>${s[1]}</div>`).join('');
+const dots=$('#dots');document.querySelectorAll('.pg').forEach((_,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Page '+(i+1));b.onclick=()=>go(i);dots.append(b)});
+function go(i){const ps=document.querySelectorAll('.pg');pg=Math.max(0,Math.min(ps.length-1,i));ps.forEach((p,j)=>p.classList.toggle('on',j==pg));[...dots.children].forEach((b,j)=>b.classList.toggle('on',j==pg));$('#pn').textContent='Page '+(pg+1)+'/'+ps.length;scrollTo(0,0);if(pg==1){$('#story').innerHTML=$('#story').innerHTML}}
+addEventListener('keydown',e=>{if(e.key=='ArrowRight')go(pg+1);if(e.key=='ArrowLeft')go(pg-1)});go(0);
+
+// Page 3: matrices
+const M={A:[[0,1],[1,0]],B:[[1,0],[0,-1]]},R={};
+const ar=(v,c)=>`<line x1="120" y1="120" x2="${120+v[0]*70}" y2="${120-v[1]*70}" stroke="${c}" stroke-width="4" stroke-linecap="round"/><circle cx="${120+v[0]*70}" cy="${120-v[1]*70}" r="6" fill="${c}"/>`;
+function ap(m,v){return[m[0][0]*v[0]+m[0][1]*v[1],m[1][0]*v[0]+m[1][1]*v[1]]}
+function mrun(o){let v=[1,0];$('#marr').innerHTML=ar(v,'var(--fg)');const v1=ap(M[o[0]],v),v2=ap(M[o[1]],v1);setTimeout(()=>$('#marr').innerHTML=ar(v,'var(--fg)')+ar(v1,'var(--ac)'),500);setTimeout(()=>$('#marr').innerHTML=ar(v,'var(--fg)')+ar(v1,'var(--ac)')+ar(v2,'var(--ac2)'),1100);
+R[o]=v2;setTimeout(()=>{$('#mres').innerHTML=`First ${o[0]}, then ${o[1]} → <b>(${v2[0]}, ${v2[1]})</b><br>`+(R.AB&&R.BA?`<div class="key">AB = (${R.AB}) and BA = (${R.BA}) → <b>different!</b></div>`:'Now try the other order too.')},1200)}
+// Page 4: qubit
+const th_=$('#th');function qd(){const a=+th_.value,p=Math.cos(a*Math.PI/360)**2;$('#thv').textContent=a;$('#b0').style.width=p*100+'%';$('#b1').style.width=(1-p)*100+'%';$('#p0').textContent=(p*100).toFixed(0)+'%';$('#p1').textContent=((1-p)*100).toFixed(0)+'%';const r=a*Math.PI/180;$('#qv').setAttribute('x2',120+90*Math.sin(r));$('#qv').setAttribute('y2',120-90*Math.cos(r));return p}
+th_.oninput=()=>{qd();$('#mc').innerHTML=''};qd();
+function meas(n){const p=qd();let z=0;for(let i=0;i<n;i++)if(Math.random()<p)z++;$('#mc').innerHTML=n==1?`Result: <b>${z?'0':'1'}</b>`:`<div class="row"><b>Got 0</b><div class="bar" style="width:${z}%"></div>${z}</div><div class="row"><b>Got 1</b><div class="bar" style="width:${100-z}%"></div>${100-z}</div>`}
+// Page 5: relational
+function rel(re){const d=$('#cd').checked,o=$('#co').checked;$('#l1').style.opacity=d?1:0;$('#l2').style.opacity=o?1:0;const u=()=>Math.random()<.5?'UP ↑':'DOWN ↓';let h='';if(re||!rel.v)rel.v=[u(),u()];if(!d&&!o)h='No interaction → no spin value (only a possibility).';else{if(d)h+=`For the Detector: <b>${rel.v[0]}</b><br>`;if(o)h+=`For you: <b>${rel.v[1]}</b><br>`;h+='Each relation has its own fact.'}$('#rtxt').innerHTML=h;$('#rs').textContent=(d||o)?'spin = relative to the interaction':'spin = ?'}rel();
+// Page 6: padding
+function pd(){const L=+$('#ml').value;$('#mlv').textContent=L;$('#pad').innerHTML=[...document.querySelectorAll('.ln')].map(i=>{let tk=i.value.trim().split(/\s+/).filter(Boolean).slice(0,L);const n=tk.length;while(tk.length<L)tk.push('PAD');return`<div class="box" style="margin:8px 0">${tk.map(x=>`<span class="chip ${x=='PAD'?'pad':''}">${x}</span>`).join('')}<br><small>Mask:</small> ${tk.map(x=>`<span class="chip m0">${x=='PAD'?0:1}</span>`).join('')}</div>`}).join('')}
+$('#ml').oninput=pd;document.querySelectorAll('.ln').forEach(i=>i.oninput=pd);pd();
+// Page 7: embeddings
+const E={man:[2,1],woman:[2,3],king:[5,1.2],queen:[5,3.2],apple:[-3,-2],mango:[-3.6,-1.4],laptop:[-1,-4],phone:[-.3,-3.4],electron:[-4,3.2],photon:[-3.2,3.8]};let esel=[],eextra='';
+const sx=x=>180+x*30,sy=y=>170-y*30;
+function edraw(){$('#esvg').innerHTML=`<line x1="0" y1="${sy(0)}" x2="360" y2="${sy(0)}" stroke="var(--bd)"/><line x1="${sx(0)}" y1="0" x2="${sx(0)}" y2="300" stroke="var(--bd)"/>`+eextra+Object.entries(E).map(([k,v])=>`<g style="cursor:pointer" onclick="epick('${k}')"><circle cx="${sx(v[0])}" cy="${sy(v[1])}" r="${esel.includes(k)?9:6}" fill="${esel.includes(k)?'var(--ac2)':'var(--ac)'}"/><text x="${sx(v[0])+10}" y="${sy(v[1])+4}" fill="var(--fg)" font-size="12">${k}</text></g>`).join('');if(!esel.length)$('#eres').textContent='Pick two words.'}
+function epick(k){eextra='';if(esel.length>=2)esel=[];esel.push(k);edraw();if(esel.length==2){const[a,b]=esel.map(x=>E[x]),c=(a[0]*b[0]+a[1]*b[1])/(Math.hypot(...a)*Math.hypot(...b));$('#eres').innerHTML=`<b>${esel[0]}</b> and <b>${esel[1]}</b><br>Cosine similarity = <b>${c.toFixed(2)}</b><br>`+(c>.9?'Very similar.':c>.3?'Somewhat related.':'Words from different worlds.')}else $('#eres').textContent=k+' selected. Pick one more word.'}
+function analogy(){esel=['king','man','woman'];const v=[E.king[0]-E.man[0]+E.woman[0],E.king[1]-E.man[1]+E.woman[1]];let best,bd=1e9;for(const[k,e]of Object.entries(E)){if(esel.includes(k))continue;const d=Math.hypot(e[0]-v[0],e[1]-v[1]);if(d<bd){bd=d;best=k}}eextra=`<line x1="${sx(E.man[0])}" y1="${sy(E.man[1])}" x2="${sx(E.woman[0])}" y2="${sy(E.woman[1])}" stroke="var(--ac2)" stroke-dasharray="5 4"/><line x1="${sx(E.king[0])}" y1="${sy(E.king[1])}" x2="${sx(v[0])}" y2="${sy(v[1])}" stroke="var(--ac2)" stroke-dasharray="5 4"/>`;edraw();$('#eres').innerHTML=`king − man + woman = vector (${v[0]}, ${v[1]})<br>Closest word: <b>${best}</b>`}
+edraw();
+// Page 8: data analysis
+function da(){const w=$('#dt').value.toLowerCase().replace(/[^a-z0-9\u0900-\u097f\s]/g,'').split(/\s+/).filter(Boolean),c={};w.forEach(x=>c[x]=(c[x]||0)+1);const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,8),m=top.length?top[0][1]:1;$('#dres').innerHTML=`<p>Total words: <b>${w.length}</b> · Unique words (vocabulary): <b>${Object.keys(c).length}</b></p>`+top.map(([k,v])=>`<div class="row"><b>${k}</b><div class="bar" style="width:${v/m*60}%"></div>${v}</div>`).join('')}
+$('#dt').oninput=da;da();
+</script></body></html>
